@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "bosses_of_mass_destruction:void_thorn",
+    "minecraft:ender_pearl",
+    "bosses_of_mass_destruction:ancient_anima"
+  ],
+  "result": {
+    "id": "bosses_of_mass_destruction:charged_ender_pearl"
+  }
+}

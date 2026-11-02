@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "condition": {
+            "type": "minecraft:match_block",
+            "blocks": "bosses_of_mass_destruction:mob_ward",
+            "state": {
+              "triple_part": "bottom"
+            }
+          },
+          "name": "bosses_of_mass_destruction:mob_ward"
+        }
+      ],
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      }
+    }
+  ]
+}

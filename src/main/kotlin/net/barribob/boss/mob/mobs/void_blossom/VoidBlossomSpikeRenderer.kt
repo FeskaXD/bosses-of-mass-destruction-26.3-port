@@ -1,0 +1,96 @@
+package net.barribob.boss.mob.mobs.void_blossom
+
+import net.minecraft.client.renderer.rendertype.RenderTypes
+import net.barribob.boss.Mod
+import net.barribob.boss.render.IRenderer
+import net.barribob.boss.utils.ModColors
+import net.barribob.boss.utils.ModUtils.model
+import net.barribob.boss.utils.VanillaCopies
+import net.minecraft.client.renderer.rendertype.RenderType
+import com.mojang.blaze3d.vertex.VertexConsumer
+import net.barribob.boss.render.legacy.MultiBufferSource
+import com.mojang.blaze3d.vertex.PoseStack
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.util.Mth
+import com.mojang.math.Axis
+import net.minecraft.world.phys.Vec3
+import kotlin.math.*
+
+class VoidBlossomSpikeRenderer : IRenderer<VoidBlossomEntity> {
+    private val spikeTexture = Mod.identifier("textures/entity/void_blossom_spike.png")
+    private val layer: RenderType = RenderTypes.entityCutout(spikeTexture)
+    private val textureRatio = 22.0f / 64.0f
+
+    override fun render(
+        entity: VoidBlossomEntity,
+        yaw: Float,
+        partialTicks: Float,
+        matrices: PoseStack,
+        vertexConsumers: MultiBufferSource,
+        light: Int
+    ) {
+        for(kv in entity.clientSpikeHandler.getSpikes()) {
+            renderBeam(
+                entity,
+                kv.value,
+                partialTicks,
+                ModColors.WHITE,
+                matrices,
+                vertexConsumers,
+                layer
+            )
+        }
+    }
+
+    private fun renderBeam(actor: LivingEntity, spike: VoidBlossomClientSpikeHandler.Spike, tickDelta: Float, color: Vec3, matrixStack: PoseStack, vertexConsumerProvider: MultiBufferSource, layer: RenderType) {
+        val numTextures = 8.0f
+        val lifeRatio = 2.0f
+        val textureProgress = max(0f, ((spike.age + tickDelta) * lifeRatio / spike.maxAge) - lifeRatio + 1)
+        if(textureProgress >= 1) return
+
+        val spikeHeight = spike.height
+        val spikeWidth = textureRatio * spikeHeight * 0.5f
+        val upProgress = (sin((min((spike.age + tickDelta) / (spike.maxAge * 0.4), 1.0)) * Math.PI * 0.5) - 1) * spikeHeight
+        val texTransformer = textureMultiplier(1 / numTextures, floor(textureProgress * numTextures) / numTextures)
+        matrixStack.pushPose()
+        val offset = VanillaCopies.fromLerpedPosition(actor, 0.0, tickDelta).subtract(spike.pos)
+        matrixStack.translate(-offset.x, upProgress - offset.y, -offset.z)
+        val bottomPos = spike.offset
+        val n = acos(bottomPos.y).toFloat()
+        val o = atan2(bottomPos.z, bottomPos.x).toFloat()
+        matrixStack.rotate(Axis.YP.rotationDegrees((1.5707964f - o) * 57.295776f))
+        matrixStack.rotate(Axis.XP.rotationDegrees(n * 57.295776f))
+        val q = 0.0F
+        val red = (color.x * 255).toInt()
+        val green = (color.y * 255).toInt()
+        val blue = (color.z * 255).toInt()
+        val af = Mth.cos((q + 3.1415927f).toDouble()) * spikeWidth
+        val ag = Mth.sin((q + 3.1415927f).toDouble()) * spikeWidth
+        val ah = Mth.cos((q + 0.0f).toDouble()) * spikeWidth
+        val ai = Mth.sin((q + 0.0f).toDouble()) * spikeWidth
+        val aj = Mth.cos((q + 1.5707964f).toDouble()) * spikeWidth
+        val ak = Mth.sin((q + 1.5707964f).toDouble()) * spikeWidth
+        val al = Mth.cos((q + 4.712389f).toDouble()) * spikeWidth
+        val am = Mth.sin((q + 4.712389f).toDouble()) * spikeWidth
+        val vertexConsumer: VertexConsumer = vertexConsumerProvider.getBuffer(layer)
+        val entry: PoseStack.Pose = matrixStack.last()
+        val matrix4f = entry.model
+        val matrix3f = entry.normal()
+        val c0 = texTransformer(0.4999f)
+        val c2 = texTransformer(0.0f)
+        val c1 = texTransformer(1.0f)
+        VanillaCopies.method_23173(vertexConsumer, matrix4f, entry, af, spikeHeight, ag, red, green, blue, c0, 0.0f)
+        VanillaCopies.method_23173(vertexConsumer, matrix4f, entry, af, 0.0f, ag, red, green, blue, c0, 1.0f)
+        VanillaCopies.method_23173(vertexConsumer, matrix4f, entry, ah, 0.0f, ai, red, green, blue, c2, 1.0f)
+        VanillaCopies.method_23173(vertexConsumer, matrix4f, entry, ah, spikeHeight, ai, red, green, blue, c2, 0.0f)
+        VanillaCopies.method_23173(vertexConsumer, matrix4f, entry, aj, spikeHeight, ak, red, green, blue, c1, 0.0f)
+        VanillaCopies.method_23173(vertexConsumer, matrix4f, entry, aj, 0.0f, ak, red, green, blue, c1, 1.0f)
+        VanillaCopies.method_23173(vertexConsumer, matrix4f, entry, al, 0.0f, am, red, green, blue, c0, 1.0f)
+        VanillaCopies.method_23173(vertexConsumer, matrix4f, entry, al, spikeHeight, am, red, green, blue, c0, 0.0f)
+        matrixStack.popPose()
+    }
+
+    private fun textureMultiplier(multiplier: Float, adjustment: Float): (Float) -> Float = fun(texCoord): Float {
+        return (texCoord * multiplier) + adjustment
+    }
+}

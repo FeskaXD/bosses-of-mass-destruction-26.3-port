@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.stuff_stuffs.multipart_entities.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "common.InvokerArrayVoxelShape",
+    "common.MixinBox",
+    "common.MixinEntity",
+    "common.MixinProjectileEntity",
+    "common.MixinVoxelShape",
+    "common.MixinVoxelShapes"
+  ],
+  "client": [
+    "client.MixinClientPlayerInteractionManager"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

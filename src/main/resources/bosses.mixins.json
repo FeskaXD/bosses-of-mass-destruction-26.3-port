@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "net.barribob.boss.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "EnderEyeUseMixin",
+    "ExplosionMixin",
+    "IceBlockMixin",
+    "ServerPlayerEntityMixin",
+    "SpawnHelperMixin"
+  ],
+  "client": [
+    "BossBarHudMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

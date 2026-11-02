@@ -1,0 +1,60 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+    id 'org.jetbrains.kotlin.jvm' version "${kotlin_version}"
+}
+
+base { archivesName = "bosses-of-mass-destruction" }
+version = "1.10.1-mc26.3-port"
+
+repositories {
+    mavenCentral()
+}
+
+// Bosses of Mass Destruction (Fabric 1.21, Yarn) ported to 26.3 (Mojang names).
+// MultipartEntities (MIT, same author) is compiled in from src/main/java/io.
+sourceSets {
+    main {
+        resources { srcDir 'mp_resources' }
+    }
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/bomd.accesswidener")
+    runs {
+        configureEach {
+            vmArg "-Djavax.net.ssl.trustStoreType=Windows-ROOT"
+        }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    implementation files('libs/fabric-language-kotlin-1.14.2+kotlin.2.4.21.jar')
+    implementation files('libs/geckolib-fabric-26.3-5.5.7.jar', 'libs/cloth-config-fabric-26.3.159.jar')
+    implementation fileTree(dir: 'libs/cca', include: '*.jar')
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 25
+    it.options.encoding = 'UTF-8'
+    it.options.compilerArgs += ['-Xmaxerrs', '100000', '-Xmaxwarns', '0']
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25
+        suppressWarnings = true
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+processResources {
+    inputs.property "version", project.version
+    filesMatching("fabric.mod.json") { expand "version": project.version }
+}

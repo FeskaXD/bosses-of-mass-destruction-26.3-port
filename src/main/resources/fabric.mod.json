@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "id": "bosses_of_mass_destruction",
+  "version": "${version}",
+  "name": "Bosses of Mass Destruction (26.x Port)",
+  "description": "Unofficial 26.x port of Bosses of Mass Destruction by Barribob. Adds high threat mobs for players to take on.",
+  "authors": [
+    "Barribob (original)",
+    "MultipartEntities by stuff_stuffs (MIT)"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/bosses-of-mass-destruction",
+    "sources": "https://github.com/miyo6032/bosses-of-mass-destruction",
+    "issues": "https://github.com/miyo6032/bosses-of-mass-destruction/issues"
+  },
+  "license": "LGPL-3.0-only",
+  "icon": "assets/bosses_of_mass_destruction/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.barribob.boss.MainKt::init",
+      "net.barribob.maelstrom.MaelstromModKt::init",
+      "io.github.stuff_stuffs.multipart_entities.common.MultipartEntities"
+    ],
+    "client": [
+      "net.barribob.boss.MainKt::clientInit",
+      "net.barribob.maelstrom.MaelstromModClientKt::clientInit",
+      "io.github.stuff_stuffs.multipart_entities.client.MultipartEntitiesClient"
+    ],
+    "cardinal-components-level": [
+      "net.barribob.boss.cardinalComponents.ModComponents"
+    ],
+    "cardinal-components-entity": [
+      "net.barribob.boss.cardinalComponents.ModComponents"
+    ]
+  },
+  "mixins": [
+    "bosses.mixins.json",
+    "maelstrom.mixins.json",
+    "MultipartEntities.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.0",
+    "fabric-api": "*",
+    "fabric-language-kotlin": ">=1.14.0",
+    "minecraft": ">=26.3",
+    "java": ">=25",
+    "cardinal-components-base": ">=8.0.0",
+    "cardinal-components-level": ">=8.0.0",
+    "cardinal-components-entity": ">=8.0.0",
+    "geckolib": ">=5.5",
+    "cloth-config": ">=26.0.0"
+  },
+  "custom": {
+    "cardinal-components": [
+      "bosses_of_mass_destruction:event_scheduler",
+      "bosses_of_mass_destruction:lich_summon_counter",
+      "bosses_of_mass_destruction:player_move_history",
+      "bosses_of_mass_destruction:chunk_block_cache_component",
+      "bosses_of_mass_destruction:charged_ender_pearl_cooldown_component"
+    ],
+    "loom:injected_interfaces": {
+      "net/minecraft/client/renderer/entity/state/EntityRenderState": [
+        "com/geckolib/renderer/base/GeoRenderState"
+      ],
+      "net/minecraft/client/renderer/blockentity/state/BlockEntityRenderState": [
+        "com/geckolib/renderer/base/GeoRenderState"
+      ]
+    }
+  },
+  "accessWidener": "bomd.accesswidener"
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:netherite_scrap",
+    "minecraft:dragon_breath",
+    "minecraft:ghast_tear"
+  ],
+  "result": {
+    "id": "bosses_of_mass_destruction:brimstone_nectar"
+  }
+}
