@@ -36,24 +36,6 @@ Needed on both the client and the server.
 - Updated saving, items, blocks, tooltips, advancements, loot tables and recipes to the 26.x formats.
 - [MultipartEntities](https://github.com/miyo6032/MultipartEntities) by stuff_stuffs (MIT, fork used by the original mod) is bundled inside the jar, the same way the original did.
 
-## Known limitations
-
-These are cosmetic and do not affect gameplay:
-
-- Per-bone glow effects are not rendered.
-- The Obsidilith shield has no tint or transparency.
-- The client-side "eternal night" sky effect is not shown.
-- Multipart hitbox outlines (F3+B) are not drawn.
-
-## Building
-
-1. Install Java 25.
-2. Put these jars into a `libs/` folder (download them from Modrinth):
-   - `fabric-language-kotlin-1.14.2+kotlin.2.4.21.jar`
-   - `geckolib-fabric-26.3-5.5.7.jar`
-   - `cloth-config-fabric-26.3.159.jar`
-   - the Cardinal Components 8.1.0 module jars in `libs/cca/`
-3. Run `./gradlew build`. The jar ends up in `build/libs/`.
 
 ## License
 
